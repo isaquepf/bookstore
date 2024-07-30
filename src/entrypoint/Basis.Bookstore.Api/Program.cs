@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication.Negotiate;
-using BasisBookstore.Infraestructure.Bootstrap;
+﻿using BasisBookstore.Infraestructure.Bootstrap;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,14 +10,17 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddAuthentication(NegotiateDefaults.AuthenticationScheme)
-   .AddNegotiate();
-
-builder.Services.AddAuthorization(options =>
+builder.Services.AddCors(options =>
 {
-    // By default, all incoming requests will be authorized according to the default policy.
-    options.FallbackPolicy = options.DefaultPolicy;
+    options.AddDefaultPolicy(
+        policy =>
+        {
+            policy.AllowAnyOrigin();
+            policy.AllowAnyMethod();
+            policy.AllowAnyHeader();
+        });
 });
+
 
 builder.Services.ConfigureDataServices(builder.Configuration);
 builder.Services.ConfigureMediatrServices();
@@ -26,19 +28,15 @@ builder.Services.ConfigureMediatrServices();
 var app = builder.Build();
 
 
-app.UseCors();
-
-
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.UseCors(c => c.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 }
 
 app.UseHttpsRedirection();
-
-app.UseAuthorization();
 
 app.MapControllers();
 
