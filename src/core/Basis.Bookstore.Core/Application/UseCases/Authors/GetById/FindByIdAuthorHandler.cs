@@ -1,4 +1,5 @@
 ﻿using Basis.Bookstore.Core.Application.Base;
+using Basis.Bookstore.Core.Application.UseCases.Authors;
 using Basis.Bookstore.Core.Application.UseCases.Authors.GetById;
 using Basis.Bookstore.Core.Domain.Contracts.Repositories;
 using Microsoft.Extensions.Logging;
@@ -21,9 +22,13 @@ namespace Basis.Bookstore.Core.Application.UseCases.Author.GetById
             {
                 var author = _repository.GetById(request.Id);
 
-                Result.Data = author;
+                Result.Data = new AuthorResult
+                {
+                    Name = author.Name,
+                    Id = author.Id,
+                };
             }
-            catch (Exception error) 
+            catch (Exception error)
             {
                 _logger.LogError(error, "An errors occurs when find an author", GetFormattedException(error));
                 Result.AddNotification("Ocorreu um problema tente novamente em alguns instantes.", ErrorCode.InternalError);

@@ -11,13 +11,30 @@ namespace Basis.Bookstore.Core.Application.UseCases.Books.Create
         private readonly IBookRepository _bookRepository;
         private readonly IAuthorRepository _authorRepository;
         private readonly IBookAuthorRepository _bookAuthorRepository;
+        private readonly IBookPurchaseMethodRepository _bookPurchaseMethodRepository;
+        private readonly IBookSubjectRepository _bookSubjectRepository;
         private readonly ILogger<CreateBookHandler> _logger;
-        public CreateBookHandler(IBookRepository repo, IBookAuthorRepository repoAuthorBook, IAuthorRepository repoAuthor, ILogger<CreateBookHandler> logger)
+        private readonly ISubjectRepository _subjectRepository;
+        private readonly IPurchaseMethodRepository _purchaseMethodRepository;
+
+        public CreateBookHandler(
+            IBookRepository repo,
+            IBookAuthorRepository repoAuthorBook,
+            IAuthorRepository repoAuthor,
+            ILogger<CreateBookHandler> logger,
+            IBookPurchaseMethodRepository bookPurchaseMethodRepository,
+            IBookSubjectRepository bookSubjectRepository,
+            ISubjectRepository subjectRepository,
+            IPurchaseMethodRepository purchaseMethodRepository)
         {
             _bookRepository = repo;
             _bookAuthorRepository = repoAuthorBook;
             _authorRepository = repoAuthor;
             _logger = logger;
+            _bookPurchaseMethodRepository = bookPurchaseMethodRepository;
+            _bookSubjectRepository = bookSubjectRepository;
+            _subjectRepository = subjectRepository;
+            _purchaseMethodRepository = purchaseMethodRepository;
         }
 
         public override Task<Result> Handle(CreateBookCommand request, CancellationToken cancellationToken)
@@ -32,8 +49,17 @@ namespace Basis.Bookstore.Core.Application.UseCases.Books.Create
                     return Task.FromResult(Result);
                 }
 
-                //Create Book
-                var bookEntity = _bookRepository.Add(new Domain.Entities.Book
+                var subjects = _subjectRepository.Get(p => request.SubjectsIds.Contains(p.Id)).ToList();
+
+                if (subjects == null || !subjects.Any())
+                {
+                    Result.AddNotification("Subjects not Found", ErrorCode.NotFound);
+                    return Task.FromResult(Result);
+                }
+ 
+
+
+                var book = _bookRepository.Add(new Domain.Entities.Book
                 {
                     Title = request.Title,
                     Description = request.Description,
@@ -42,19 +68,61 @@ namespace Basis.Bookstore.Core.Application.UseCases.Books.Create
                     PublishedYear = request.PublishedAt
                 });
 
-                foreach (var author in authors)
+                var bookResult = new BookResult()
                 {
-                    _bookAuthorRepository.Add(new BookAuthor()
+                    Id = book.Id,
+                    Description = book.Description,
+                    Edition = book.Edition,
+                    PublishedYear = book.PublishedYear,
+                    Title = request.Title,
+                    Publisher = book.Publisher,
+                    Authors = authors.Select(p => new AuthorResult { 
+                        Id = p.Id,
+                        Name  = p.Name,
+                    }).ToList(),
+                    Subjects = subjects.Select(p => new SubjectResult
                     {
-                        AuthorId = author.Id,
-                        BookId = bookEntity.Id
+                        Id = p.Id,
+                        Description = p.Description
+                    }).ToList(),
+                    PurchaseMethods = request.PurchaseMethods.Select(p => new PurchaseMethodResult
+                    {
+                        BookId = book.Id,
+                        Description = p.Description,
+                        Price = p.Price,
+                        Id = p.Id
+                    }).ToList(),                    
+                };
+
+                foreach (var subjectId in request.SubjectsIds)
+                {
+                    _bookSubjectRepository.Add(new BookSubject
+                    {
+                        BookId = book.Id,
+                        SubjectId = subjectId
                     });
                 }
 
+                foreach (var author in authors)
+                {
+                     _bookAuthorRepository.Add(new BookAuthor()
+                    {
+                        AuthorId = author.Id,
+                        BookId = book.Id
+                    });
+                }
 
-                request.Id = bookEntity.Id;
-
-                Result.Data = request;
+                foreach (var purchaseMethod in request.PurchaseMethods)
+                {
+                    _bookPurchaseMethodRepository.Add(new BookPurchaseMethod()
+                    {
+                        BookId = book.Id,
+                        PurchaseMethodId = purchaseMethod.Id,
+                        Price = purchaseMethod.Price,
+                    });
+                }
+               
+                Result.Data = bookResult;
             }
             catch (Exception error)
             {

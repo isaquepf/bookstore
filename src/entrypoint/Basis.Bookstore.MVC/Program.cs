@@ -1,24 +1,15 @@
-﻿using Microsoft.AspNetCore.Authentication.Negotiate;
+﻿using Basis.Bookstore.Mvc.Data;
+using BasisBookstore.Infraestructure.Bootstrap;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Basis.Bookstore.MVC.Data;
-
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDbContext<BasisBookstoreMvcContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("BasisBookstoreMvcContext") ?? throw new InvalidOperationException("Connection string 'BasisBookstoreMvcContext' not found.")));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddAuthentication(NegotiateDefaults.AuthenticationScheme)
-   .AddNegotiate();
-
-builder.Services.AddAuthorization(options =>
-{
-    // By default, all incoming requests will be authorized according to the default policy.
-    options.FallbackPolicy = options.DefaultPolicy;
-});
-builder.Services.AddRazorPages();
-builder.Services.AddDbContext<BasisBookstoreMVCContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("BasisBookstoreMVCContext") ?? throw new InvalidOperationException("Connection string 'BasisBookstoreMVCContext' not found.")));
+builder.Services.ConfigureDataServices(builder.Configuration);
+builder.Services.ConfigureMediatrServices();
 
 var app = builder.Build();
 

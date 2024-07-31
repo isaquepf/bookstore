@@ -20,10 +20,23 @@ namespace Basis.Bookstore.Core.Application.UseCases.Subjects.Update
         {
             try
             {
-                var entity = _repository.GetById(request.Id);
-                entity.Description = request.Subject.Description;
-                _repository.Update(entity);
+                var subject = _repository.GetById(request.Id);
 
+                if (subject == null)
+                {
+                    Result.AddNotification("Não foi encontrado um autor com esse id.", ErrorCode.NotFound);
+                    return Task.FromResult(Result);
+                }
+
+                subject.Description = request.Subject.Description;
+
+                _repository.Update(subject);
+
+                Result.Data = new SubjectResult
+                {
+                    Description = subject.Description,
+                    Id = subject.Id,
+                };
             }
             catch (Exception error)
             {

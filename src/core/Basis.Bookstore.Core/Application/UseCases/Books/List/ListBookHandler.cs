@@ -1,24 +1,23 @@
 ﻿using Basis.Bookstore.Core.Application.Base;
+using Basis.Bookstore.Core.Application.UseCases.Books;
 using Basis.Bookstore.Core.Application.UseCases.Books.Find;
 using Basis.Bookstore.Core.Domain.Contracts.Repositories;
 using Microsoft.Extensions.Logging;
-using System.Linq;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace MyBook.Application.UseCases.Book.Find
 {
-    public class FindBookHandler : Handler<FindBookCommand>
+    public class ListBookHandler : Handler<ListBookCommand>
     {
         private readonly IBookRepository _repository;
-        private readonly ILogger<FindBookHandler> _logger;
-        public FindBookHandler(IBookRepository repository, ILogger<FindBookHandler> logger)
+        private readonly ILogger<ListBookHandler> _logger;
+        public ListBookHandler(IBookRepository repository, ILogger<ListBookHandler> logger)
         {
             _repository = repository;
             _logger = logger;
         }
 
 
-        public override Task<Result> Handle(FindBookCommand request, CancellationToken cancellationToken)
+        public override Task<Result> Handle(ListBookCommand request, CancellationToken cancellationToken)
         {
             var booksResult = new List<BookResult>();
 

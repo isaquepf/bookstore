@@ -1,4 +1,5 @@
 ﻿using Basis.Bookstore.Core.Application.Base;
+using Basis.Bookstore.Core.Application.UseCases.Authors;
 using Basis.Bookstore.Core.Domain.Contracts.Repositories;
 using Microsoft.Extensions.Logging;
 
@@ -23,7 +24,11 @@ namespace Basis.Bookstore.Core.Application.UseCases.Author.Find
 
                 authors ??= [];
 
-                Result.Data = authors;
+                Result.Data = authors.Select(p => new AuthorResult
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                });
             }
             catch (Exception error)
             {

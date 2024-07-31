@@ -27,7 +27,7 @@ namespace Basis.Bookstore.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var result = await _mediator.Send(new FindBookCommand());
+            var result = await _mediator.Send(new ListBookCommand());
 
             return DefaultPresenter.Cast(result, HttpStatusCode.OK);
         }

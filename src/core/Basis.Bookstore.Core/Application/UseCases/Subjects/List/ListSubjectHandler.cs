@@ -1,5 +1,7 @@
 ﻿using Basis.Bookstore.Core.Application.Base;
+using Basis.Bookstore.Core.Application.UseCases.Subjects;
 using Basis.Bookstore.Core.Domain.Contracts.Repositories;
+using Basis.Bookstore.Core.Domain.Entities;
 using Microsoft.Extensions.Logging;
 
 namespace Basis.Bookstore.Core.Application.UseCases.Subject.Find
@@ -19,7 +21,20 @@ namespace Basis.Bookstore.Core.Application.UseCases.Subject.Find
 
             try
             {
-                Result.Data = _repo.GetAll();
+                var subjects =  _repo.GetAll();
+
+                var subjectsModel = new List<SubjectResult>();
+
+                foreach (var subject in subjects)
+                {
+                    subjectsModel.Add(new SubjectResult
+                    {
+                        Description = subject.Description,
+                        Id = subject.Id,
+                    });
+                }
+
+                Result.Data = subjectsModel;
             }
             catch (Exception error)
             {

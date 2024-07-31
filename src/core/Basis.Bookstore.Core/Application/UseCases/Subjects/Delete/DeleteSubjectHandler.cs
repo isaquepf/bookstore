@@ -1,5 +1,7 @@
 ﻿using Basis.Bookstore.Core.Application.Base;
+using Basis.Bookstore.Core.Application.UseCases.Subjects;
 using Basis.Bookstore.Core.Domain.Contracts.Repositories;
+using Basis.Bookstore.Core.Domain.Entities;
 using Microsoft.Extensions.Logging;
 
 namespace MyBook.Application.UseCases.Subject.Delete
@@ -19,8 +21,21 @@ namespace MyBook.Application.UseCases.Subject.Delete
         {
             try
             {
-                var entity = _repository.GetById(request.Id);
-                _repository.Remove(entity);
+                var subject = _repository.GetById(request.Id);
+
+                if (subject == null)
+                {
+                    Result.AddNotification("Não foi encontrado um assunto válido.", ErrorCode.NotFound);
+                    return Task.FromResult(Result);
+                }
+
+                _repository.Remove(subject);
+
+                Result.Data = new SubjectResult
+                {
+                    Description = subject.Description,
+                    Id = subject.Id,
+                };
             }
             catch (Exception error)
             {

@@ -27,7 +27,11 @@ namespace Basis.Bookstore.Core.Application.UseCases.Subjects.Create
 
                 request.Id = subject.Id;
 
-                Result.Data = request;
+                Result.Data = new SubjectResult
+                {
+                    Description = subject.Description,
+                    Id = subject.Id,    
+                };
 
             }
             catch (Exception error)

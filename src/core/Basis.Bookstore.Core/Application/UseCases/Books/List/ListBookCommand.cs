@@ -2,7 +2,7 @@
 
 namespace Basis.Bookstore.Core.Application.UseCases.Books.Find
 {
-    public class FindBookCommand : Command<FindBookCommand>
+    public class ListBookCommand : Command<ListBookCommand>
     {
     }
 }

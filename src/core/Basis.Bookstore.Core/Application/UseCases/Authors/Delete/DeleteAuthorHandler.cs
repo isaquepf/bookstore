@@ -1,4 +1,5 @@
 ﻿using Basis.Bookstore.Core.Application.Base;
+using Basis.Bookstore.Core.Application.UseCases.Authors;
 using Basis.Bookstore.Core.Domain.Contracts.Repositories;
 using Microsoft.Extensions.Logging;
 
@@ -27,6 +28,12 @@ namespace Basis.Bookstore.Core.Application.UseCases.Author.Delete
                 }
 
                 _repository.Remove(author);
+
+                Result.Data = new AuthorResult
+                {
+                   Id = author.Id,
+                   Name = author.Name,
+                };
             }
             catch (Exception error)
             {

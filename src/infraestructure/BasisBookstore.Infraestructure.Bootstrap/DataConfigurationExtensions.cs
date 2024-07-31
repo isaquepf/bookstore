@@ -1,4 +1,5 @@
 ﻿using Basis.Bookstore.Core.Domain.Contracts.Repositories;
+using Basis.Bookstore.Core.Service;
 using BasisBookstore.Infraestructure.Contexts;
 using BasisBookstore.Infraestructure.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -27,6 +28,8 @@ namespace BasisBookstore.Infraestructure.Bootstrap
             services.AddTransient<IBookPurchaseMethodRepository, BookPurchaseMethodRepository>();
             services.AddTransient<IBookSubjectRepository, BookSubjectRepository>();
             services.AddTransient<ITokenService, TokenService>();
+            services.AddTransient<IFillDataService, FillDataService>();
+        
 
             return services;
         }

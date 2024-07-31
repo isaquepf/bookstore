@@ -1,5 +1,6 @@
 ﻿using Basis.Bookstore.Core.Application.Base;
 using Basis.Bookstore.Core.Domain.Contracts.Repositories;
+using Basis.Bookstore.Core.Domain.Entities;
 using Microsoft.Extensions.Logging;
 
 namespace Basis.Bookstore.Core.Application.UseCases.Subjects.FindById
@@ -19,7 +20,13 @@ namespace Basis.Bookstore.Core.Application.UseCases.Subjects.FindById
         {
             try
             {
-                Result.Data = _repository.GetById(request.Id);
+               var subject = _repository.GetById(request.Id);
+
+                Result.Data = new SubjectResult
+                {
+                    Description = subject.Description,
+                    Id = subject.Id,
+                };
             }
             catch (Exception error)
             {

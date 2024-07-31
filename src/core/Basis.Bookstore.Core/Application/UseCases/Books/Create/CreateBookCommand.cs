@@ -1,6 +1,7 @@
 ﻿
 
 using Basis.Bookstore.Core.Application.Base;
+using Basis.Bookstore.Core.Application.UseCases.PurchaseMethods.Create;
 
 namespace Basis.Bookstore.Core.Application.UseCases.Book.Create
 {
@@ -13,18 +14,23 @@ namespace Basis.Bookstore.Core.Application.UseCases.Book.Create
         public int Edition { get; set; }
         public string PublishedAt { get; set; }
         public List<int> AuthorsIds { get; set; }
+        public List<int> SubjectsIds { get; set; }
+
+        public List<CreatePurchaseMethodCommand> PurchaseMethods { get; set; }
+
         public CreateBookCommand()
         {
         }
 
-        public CreateBookCommand(string title, string publisher, int edition, string publishedAt, List<int> AuthorsIds, string description)
+        public CreateBookCommand(string title, string publisher, int edition, string publishedAt, List<int> authorsIds, string description, List<int> subjectsIds)
         {
             Title = title;
             Publisher = publisher;
             Edition = edition;
             PublishedAt = publishedAt;
-            AuthorsIds = AuthorsIds;
+            AuthorsIds = authorsIds;
             Description = description;
+            SubjectsIds = subjectsIds;
         }
     }
 }
