@@ -13,6 +13,9 @@
         public List<SubjectResult> Subjects { get; set; }
 
         public List<PurchaseMethodResult> PurchaseMethods { get; set; }
+        public string AuthorsText { get; set; }
+        public string SubjectsText { get; set; }
+
     }
 
     public class SubjectResult

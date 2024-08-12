@@ -38,7 +38,6 @@ namespace Basis.Bookstore.Mvc.Controllers
                 Authors = authors.Select(x => new SelectListItem(x.Name, x.Id.ToString()))
             };
 
-
             ViewBag.Authors = authors.Select(x => new SelectListItem { Text = x.Name, Value = x.Id.ToString() }).ToList();
 
             return View(result.Data);
@@ -64,6 +63,13 @@ namespace Basis.Bookstore.Mvc.Controllers
 
         // GET: BookModels/Create
         public IActionResult Create()
+        {
+            BookModel newBook = GetViewModelData();
+
+            return View(newBook);
+        }
+
+        private BookModel GetViewModelData()
         {
             var authors = _fillDataService.GetAllAuthors();
             var subjects = _fillDataService.GetAllSubjects();
@@ -91,8 +97,7 @@ namespace Basis.Bookstore.Mvc.Controllers
                 PurchaseMethodsVM = purchaseMethodsViewModel,
                 PurchaseItems = purchaseMethodsViewModel.PurchaseMethods
             };
-
-            return View(newBook);
+            return newBook;
         }
 
         // POST: BookModels/Create
@@ -107,6 +112,15 @@ namespace Basis.Bookstore.Mvc.Controllers
             {
                 ModelState.AddModelError("Authors", "* Ao menos um autor deve ser selecionado.");
             }
+
+            var vm = GetViewModelData();
+            bookModel.AuthorVM = vm.AuthorVM;
+            bookModel.PurchaseMethodsVM = vm.PurchaseMethodsVM;
+            bookModel.SubjectVM = vm.SubjectVM;
+
+            ModelState.Remove("PurchaseMethodsVM");
+            ModelState.Remove("PurchaseItems");
+
 
             if (ModelState.IsValid)
             {
@@ -130,6 +144,7 @@ namespace Basis.Bookstore.Mvc.Controllers
 
                 });
 
+               
                 return RedirectToAction(nameof(Index));
             }
 
@@ -145,19 +160,8 @@ namespace Basis.Bookstore.Mvc.Controllers
             }
 
             var result = await _mediator.Send(new FindByIdBookCommand(id.Value));
-            var authors = _fillDataService.GetAllAuthors();
-            var subjects = _fillDataService.GetAllSubjects();
-            var purchaseMethods = _fillDataService.GetAllPurchaseMethods();
 
-            var authorViewModel = new AuthorViewModel()
-            {
-                Authors = authors.Select(x => new SelectListItem(x.Name, x.Id.ToString()))
-            };
-
-            var subjectViewModel = new SubjectViewModel()
-            {
-                Subjects = subjects.Select(x => new SelectListItem(x.Description, x.Id.ToString()))
-            };
+            var vm = GetViewModelData();
 
             var data = (BookResult)result.Data;
 
@@ -175,13 +179,13 @@ namespace Basis.Bookstore.Mvc.Controllers
                 Edition = data.Edition,
                 PublishedYear = data.PublishedYear,
                 Publisher = data.Publisher,
-                AuthorVM = authorViewModel,
-                SubjectVM = subjectViewModel,
+                AuthorVM = vm.AuthorVM,
+                SubjectVM = vm.SubjectVM,
                 PurchaseMethodsVM = purchaseMethodsViewModel,
                 PurchaseItems = purchaseMethodsViewModel.PurchaseMethods,
                 AuthorIds = data.Authors.Select(p => p.Id.ToString()).ToList(),
-                SubjectIds = data.Subjects.Select(p => p.Id.ToString()).ToList(),
-                PurchaseMethodsIds = purchaseMethodsViewModel.PurchaseMethods.Select(p => p.Id.ToString()).ToList(),
+                SubjectIds = data.Subjects.Select(p => p.Id.ToString()).ToList()
+                //PurchaseMethodsIds = purchaseMethodsViewModel.PurchaseMethods.Select(p => p.Id.ToString()).ToList(),
             };
 
 
@@ -204,7 +208,15 @@ namespace Basis.Bookstore.Mvc.Controllers
             {
                 return NotFound();
             }
+            
+            var vm = GetViewModelData();
+            bookModel.AuthorVM = vm.AuthorVM;
+            bookModel.PurchaseMethodsVM = vm.PurchaseMethodsVM;
+            bookModel.SubjectVM = vm.SubjectVM;
 
+            ModelState.Remove("PurchaseMethodsVM");
+            ModelState.Remove("PurchaseItems");
+                
             if (ModelState.IsValid)
             {
                 var purchaseMethods = bookModel.PurchaseItems.Select(p => new Core.Application.UseCases.PurchaseMethods.Create.CreatePurchaseMethodCommand()
@@ -223,7 +235,7 @@ namespace Basis.Bookstore.Mvc.Controllers
                     SubjectsIds = bookModel.SubjectIds.Select(x => Convert.ToInt32(x)).ToList(),
                     Title = bookModel.Title,
                     AuthorsIds = bookModel.AuthorIds.Select(x => Convert.ToInt32(x)).ToList(),
-                    PurchaseMethods = purchaseMethods
+                    PurchaseMethods = purchaseMethods,                   
                 }));
 
             return RedirectToAction(nameof(Index));
@@ -269,7 +281,7 @@ namespace Basis.Bookstore.Mvc.Controllers
                 PurchaseItems = purchaseMethodsViewModel.PurchaseMethods,
                 AuthorIds = data.Authors.Select(p => p.Id.ToString()).ToList(),
                 SubjectIds = data.Subjects.Select(p => p.Id.ToString()).ToList(),
-                PurchaseMethodsIds = purchaseMethodsViewModel.PurchaseMethods.Select(p => p.Id.ToString()).ToList(),
+                //PurchaseMethodsIds = purchaseMethodsViewModel.PurchaseMethods.Select(p => p.Id.ToString()).ToList(),
             };
 
             return View(book);

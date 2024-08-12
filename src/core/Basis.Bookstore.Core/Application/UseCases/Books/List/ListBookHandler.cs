@@ -3,6 +3,7 @@ using Basis.Bookstore.Core.Application.UseCases.Books;
 using Basis.Bookstore.Core.Application.UseCases.Books.Find;
 using Basis.Bookstore.Core.Domain.Contracts.Repositories;
 using Microsoft.Extensions.Logging;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace MyBook.Application.UseCases.Book.Find
 {
@@ -57,17 +58,20 @@ namespace MyBook.Application.UseCases.Book.Find
                         Description = subject.Subject.Description
                     }));
 
+
                     booksResult.Add(new BookResult()
                     {
-                        Id = book.Id,                                                
+                        Id = book.Id,
                         Title = book.Title,
                         Description = book.Description,
                         PublishedYear = book.PublishedYear,
-                        Publisher = book.Publisher,                        
-                        Edition = book.Edition,                        
+                        Publisher = book.Publisher,
+                        Edition = book.Edition,
                         Authors = authors,
                         Subjects = subjects,
-                        PurchaseMethods = purchaseMethods                        
+                        PurchaseMethods = purchaseMethods,
+                        AuthorsText = string.Join(',', authors.Select(p => p.Name)),
+                        SubjectsText = string.Join(',', subjects.Select(p => p.Description))
                     });
                 }
 
@@ -79,7 +83,7 @@ namespace MyBook.Application.UseCases.Book.Find
                 _logger.LogError(error, "An errors occurs when list all books", GetFormattedException(error));
                 Result.AddNotification("Ocorreu um problema tente novamente em alguns instantes.", ErrorCode.InternalError);
             }
-           
+
 
             return Task.FromResult(Result);
         }

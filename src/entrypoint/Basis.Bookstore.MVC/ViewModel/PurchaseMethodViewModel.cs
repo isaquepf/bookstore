@@ -1,4 +1,6 @@
-﻿namespace Basis.Bookstore.Mvc.ViewModel
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Basis.Bookstore.Mvc.ViewModel
 {
     public class PurchaseMethodViewModel
     {        
@@ -21,8 +23,12 @@
 
         public int Id { get; set; }
 
+
         public string Name { get; set; }
 
+        [Required(ErrorMessage = "Preço é obrigatório")]
+        [Display(Name = "Preço")]
+        [DataType(DataType.Currency)]
         public decimal Price { get; set; }
     }
 }
