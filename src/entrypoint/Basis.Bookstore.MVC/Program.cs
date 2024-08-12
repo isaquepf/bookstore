@@ -1,15 +1,18 @@
-﻿using Basis.Bookstore.Mvc.Data;
+﻿using Basis.Bookstore.Infraestructure.Bootstrap;
 using BasisBookstore.Infraestructure.Bootstrap;
+using BasisBookstore.Infraestructure.Contexts;
 using Microsoft.EntityFrameworkCore;
+
+
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddDbContext<BasisBookstoreMvcContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("BasisBookstoreMvcContext") ?? throw new InvalidOperationException("Connection string 'BasisBookstoreMvcContext' not found.")));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
 builder.Services.ConfigureDataServices(builder.Configuration);
 builder.Services.ConfigureMediatrServices();
+
+
 
 var app = builder.Build();
 
@@ -23,13 +26,21 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
 app.UseRouting();
-
 app.UseAuthorization();
-
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
+ApplyMigrations(app);
+
 app.Run();
+
+static void ApplyMigrations(WebApplication app)
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var db = scope.ServiceProvider.GetRequiredService<BookstoreContext>();
+        db.Database.Migrate();
+    }
+}

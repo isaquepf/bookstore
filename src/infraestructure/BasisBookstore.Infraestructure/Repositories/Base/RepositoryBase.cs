@@ -14,21 +14,21 @@ namespace BasisBookstore.Infraestructure.Repositories.Base
         protected DbSet<T> Entity;
         private string _entityName;
 
-        public RepositoryBase(BookstoreContext contexto, ILogger<RepositoryBase<T>> logger)
+        public RepositoryBase(BookstoreContext context, ILogger<RepositoryBase<T>> logger)
         {
-            _context = contexto;
+            _context = context;
             Entity = _context.Set<T>();
             _logger = logger;
             _entityName = nameof(T);
         }
 
-        public virtual T Add(T entidade)
+        public virtual T Add(T entity)
         {
             try
-            {
-                Entity.Add(entidade);
+            {               
+                Entity.Add(entity);                
                 Save();
-                return entidade;
+                return entity;
             }
             catch (Exception error)
             {
@@ -37,11 +37,40 @@ namespace BasisBookstore.Infraestructure.Repositories.Base
             }
         }
 
-        public virtual void Remove(T entidade)
+        public virtual void AddRange(List<T> entities)
         {
             try
             {
-                Entity.Remove(entidade);
+                Entity.AddRange(entities);
+                Save();                
+            }
+            catch (Exception error)
+            {
+                _logger.LogError(error, $"Error when save entity {_entityName}, error {error.Message}");
+                throw;
+            }
+        }
+
+        public virtual void RemoveRange(List<T> entities)
+        {
+            try
+            {
+                Entity.RemoveRange(entities);
+                Save();
+            }
+            catch (Exception error)
+            {
+                _logger.LogError(error, $"Error when remove entity {_entityName}, error {error.Message}");
+                throw;
+            }
+        }
+
+
+        public virtual void Remove(T entity)
+        {
+            try
+            {
+                Entity.Remove(entity);
                 Save();
             }
             catch (Exception error)
@@ -55,11 +84,11 @@ namespace BasisBookstore.Infraestructure.Repositories.Base
 
         public virtual IEnumerable<T> GetAll() => Entity.ToList();
 
-        public virtual void Update(T entidade)
+        public virtual void Update(T entity)
         {
             try
             {
-                Entity.Entry(entidade).State = EntityState.Modified;
+                Entity.Entry(entity).State = EntityState.Modified;
                 Save();
             }
             catch (Exception error)

@@ -25,7 +25,7 @@ namespace BasisBookstore.Infraestructure.Contexts
         public DbSet<BookSubject> BookSubjects { get; set; }
 
         public DbSet<BookAuthor> BookAuthors { get; set; }
-
+      
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -181,7 +181,8 @@ namespace BasisBookstore.Infraestructure.Contexts
                     .HasForeignKey(e => e.PurchaseMethodId);
             });
 
-        }
+
+    }
 
         public class ApplicationDbContextFactory : IDesignTimeDbContextFactory<BookstoreContext>
         {

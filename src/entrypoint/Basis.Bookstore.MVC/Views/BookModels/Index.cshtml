@@ -4,6 +4,7 @@
     ViewData["Title"] = "Index";
 }
 
+
 <h1>Index</h1>
 
 <p>
@@ -27,45 +28,54 @@
             <th>
                 @Html.DisplayNameFor(model => model.PublishedYear)
             </th>
-           @*  <th>
-                @Html.DisplayNameFor(model => model.AuthorsIds)
+            @*  <th>
+            @Html.DisplayNameFor(model => model.AuthorsIds)
             </th> *@
             @* <th>
-                @Html.DisplayNameFor(model => model.SubjectsIds)
+            @Html.DisplayNameFor(model => model.SubjectsIds)
             </th> *@
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Publisher)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Edition)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PublishedYear)
-            </td>
-           @*  <td>
-                @Html.DisplayFor(modelItem => item.AuthorsIds)
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Publisher)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Edition)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PublishedYear)
+                </td>
+                <td>
+                    <select name="Authors"
+                            id="Authors"
+                        asp-for="@item.Authors"
+                            multiple class="form-control select" asp-items="@ViewBag.Authors">
+                    </select>
+                </td>
+                @*  <td>
+            @Html.DisplayFor(modelItem => item.AuthorsIds)
             </td> *@
-           @*  <td>
-                @Html.DisplayFor(modelItem => item.SubjectsIds)
+                @*  <td>
+            @Html.DisplayFor(modelItem => item.SubjectsIds)
             </td>
-            *@ <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+            *@
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

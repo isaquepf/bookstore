@@ -1,0 +1,24 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "C#: Basis.Bookstore.Mvc Debug",
+      "type": "dotnet",
+      "request": "launch",
+      "projectPath": "${workspaceFolder}/src/entrypoint/Basis.Bookstore.Mvc.csproj.csproj"
+    },
+    {
+      "type": "DotNetAutoAttach",
+      "request": "launch",
+      "name": ".NET Core Watch: Basis.Bookstore.Mvc",
+      "args": [],
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "project": "${workspaceFolder}/src/entrypoint/Basis.Bookstore.Mvc.csproj.csproj"
+    }
+  ]
+}

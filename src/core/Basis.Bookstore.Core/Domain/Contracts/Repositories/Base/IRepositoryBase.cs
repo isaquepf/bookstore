@@ -4,11 +4,11 @@ namespace Basis.Bookstore.Core.Domain.Contracts.Repositories.Base
 {
     public interface IRepositoryBase<T> : IDisposable
     {
-        T Add(T entidade);
+        T Add(T entity);
 
-        void Remove(T entidade);
+        void Remove(T entity);
 
-        T GetById(int Id);
+        T GetById(int id);
 
         IEnumerable<T> GetAll();
 
@@ -17,6 +17,9 @@ namespace Basis.Bookstore.Core.Domain.Contracts.Repositories.Base
             Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
             string includeProperties = "");
 
-        void Update(T entidade);        
+        void Update(T entity);
+
+        void AddRange(List<T> entities);
+        void RemoveRange(List<T> entities);
     }
 }

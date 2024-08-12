@@ -24,5 +24,19 @@ namespace BasisBookstore.Infraestructure.Repositories
                         .ThenInclude(c => c.PurchaseMethod)
                                 .ToList();
         }
+
+
+        public override Book GetById(int id)
+        {
+            return Entity.AsNoTracking().Select(c => c)
+                        .Include(c => c.BookAuthors)
+                        .ThenInclude(c => c.Author)
+                        .Include(c => c.BookSubjects)
+                        .ThenInclude(c => c.Subject)
+                        .Include(c => c.BookPurchaseMethods)
+                        .ThenInclude(c => c.PurchaseMethod)
+                         .FirstOrDefault(p => p.Id == id);
+
+        }
     }
 }

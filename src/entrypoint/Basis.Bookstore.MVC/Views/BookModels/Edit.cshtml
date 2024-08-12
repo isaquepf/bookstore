@@ -4,61 +4,128 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
 
-<h4>BookModel</h4>
+<h1>Livros</h1>
+
+<h4>- Edite o seu livro.</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Publisher" class="control-label"></label>
-                <input asp-for="Publisher" class="form-control" />
-                <span asp-validation-for="Publisher" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Edition" class="control-label"></label>
-                <input asp-for="Edition" class="form-control" />
-                <span asp-validation-for="Edition" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PublishedYear" class="control-label"></label>
-                <input asp-for="PublishedYear" class="form-control" />
-                <span asp-validation-for="PublishedYear" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="AuthorsIds" class="control-label"></label>
-                <input asp-for="AuthorsIds" class="form-control" />
-                <span asp-validation-for="AuthorsIds" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="SubjectsIds" class="control-label"></label>
-                <input asp-for="SubjectsIds" class="form-control" />
-                <span asp-validation-for="SubjectsIds" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+<form asp-action="Edit">
+    <div class="row">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     </div>
-</div>
+    <div class="row">
+        <div class="col-4 form-group">
+            <label asp-for="Title" class="control-label"></label>
+            <input asp-for="Title" class="form-control" />
+            <span asp-validation-for="Title" class="text-danger"></span>
+        </div>
+        <div class="col-4 form-group">
+            <label asp-for="Description" class="control-label"></label>
+            <input asp-for="Description" class="form-control" />
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+        <div class="col-4 form-group">
+            <label asp-for="Publisher" class="control-label"></label>
+            <input asp-for="Publisher" class="form-control" />
+            <span asp-validation-for="Publisher" class="text-danger"></span>
+        </div>
+        <div class="col-4 form-group">
+            <label asp-for="Edition" class="control-label"></label>
+            <input asp-for="Edition" class="form-control" />
+            <span asp-validation-for="Edition" class="text-danger"></span>
+        </div>
+        <div class="col-4 form-group">
+            <label asp-for="PublishedYear" class="control-label"></label>
+            <input asp-for="PublishedYear" type="date" class="form-control" />
+            <span asp-validation-for="PublishedYear" class="text-danger"></span>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="form-group col-6">
+            <label asp-for="AuthorIds" class="control-label"></label>
+            <select name="AuthorIds" id="AuthorIds"
+                    class="form-control select"
+                    multiple data-live-search="true"
+                    asp-items="Model.AuthorVM.Authors"
+                    asp-for="AuthorIds">
+                <option value="0" disabled>Selecione um autor.</option>
+            </select>
+            <span asp-validation-for="AuthorIds" class="text-danger"></span>
+        </div>
+
+        <div class="form-group col-6">
+            <label asp-for="SubjectIds" class="control-label"></label>
+            <select name="SubjectIds" id="SubjectIds"
+                    class="form-control select"
+                    multiple data-live-search="true"
+                    asp-items="Model.SubjectVM.Subjects"
+                    asp-for="SubjectIds">
+                <option value="0" disabled>Selecione um assunto.</option>
+            </select>
+            <span asp-validation-for="SubjectIds" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Métodos de cobrança</th>
+                    <th>Preço</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (var i = 0; i < Model.PurchaseItems.Count; i++)
+                {
+                    <tr>
+                        <td>
+                            <input type="text"
+                                   value="@Model.PurchaseItems[i].Id"
+                                   asp-for="@Model.PurchaseItems[i].Id" readonly />
+                        </td>
+                        <td>
+                            <input type="text"
+                                   value="@Model.PurchaseItems[i].Name"
+                                   asp-for="@Model.PurchaseItems[i].Name" readonly />
+                        </td>
+
+                        <td>
+                            <input type="text"
+                                   value="@Model.PurchaseItems[i].Price"
+                                   asp-for="@Model.PurchaseItems[i].Price" />
+                        </td>
+                        <br />
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+
+
+    <div class="form-group">
+        <input type="submit" value="Salvar" class="btn btn-primary" />
+    </div>
+
+</form>
+
+
 
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+
+
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('select').selectpicker();
+            });
+        </script>
+    }
 }

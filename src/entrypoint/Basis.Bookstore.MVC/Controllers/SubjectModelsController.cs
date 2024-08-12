@@ -1,17 +1,10 @@
 ﻿using Basis.Bookstore.Api.Model;
-using Basis.Bookstore.Core.Application.UseCases.Author.Create;
-using Basis.Bookstore.Core.Application.UseCases.Author.Delete;
-using Basis.Bookstore.Core.Application.UseCases.Author.Find;
-using Basis.Bookstore.Core.Application.UseCases.Authors.GetById;
-using Basis.Bookstore.Core.Application.UseCases.Authors.Update;
 using Basis.Bookstore.Core.Application.UseCases.Subject.Create;
 using Basis.Bookstore.Core.Application.UseCases.Subject.Find;
 using Basis.Bookstore.Core.Application.UseCases.Subject.Update;
 using Basis.Bookstore.Core.Application.UseCases.Subjects.FindById;
-using Basis.Bookstore.Mvc.Data;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using MyBook.Application.UseCases.Subject.Delete;
 
 namespace Basis.Bookstore.Mvc.Controllers

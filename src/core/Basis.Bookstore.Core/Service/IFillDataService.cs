@@ -1,5 +1,7 @@
 ﻿using Basis.Bookstore.Core.Application.UseCases.Authors;
+using Basis.Bookstore.Core.Application.UseCases.PurchaseMethods;
 using Basis.Bookstore.Core.Application.UseCases.Subjects;
+
 
 namespace Basis.Bookstore.Core.Service
 {
@@ -8,6 +10,8 @@ namespace Basis.Bookstore.Core.Service
         List<AuthorResult> GetAllAuthors();
 
         List<SubjectResult> GetAllSubjects();
+
+        List<PurchaseMethodResult> GetAllPurchaseMethods();
 
     }
 }

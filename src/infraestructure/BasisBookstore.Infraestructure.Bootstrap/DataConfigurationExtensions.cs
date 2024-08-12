@@ -5,15 +5,15 @@ using BasisBookstore.Infraestructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using VenturesLab.BacklogTasks.Core.Service;
 
-namespace BasisBookstore.Infraestructure.Bootstrap
+
+namespace Basis.Bookstore.Infraestructure.Bootstrap
 {
     public static class DataConfigurationExtensions
     {
         public static IServiceCollection ConfigureDataServices(this IServiceCollection services, IConfiguration configuration)
         {
-            var connection = configuration["ConnectionStrings:BackloglistConnection"];
+            var connection = configuration["ConnectionStrings:BookstoreConnection"];
 
             services.AddDbContext<BookstoreContext>(options =>
                 options.UseSqlite(connection)
@@ -30,6 +30,18 @@ namespace BasisBookstore.Infraestructure.Bootstrap
             services.AddTransient<ITokenService, TokenService>();
             services.AddTransient<IFillDataService, FillDataService>();
         
+
+            return services;
+        }       
+
+
+        public static IServiceProvider ApplyMigrations(this IServiceProvider services)
+        {
+            using (var scope = services.CreateScope())
+            {
+                var db = scope.ServiceProvider.GetRequiredService<BookstoreContext>();
+                db.Database.Migrate();
+            }
 
             return services;
         }

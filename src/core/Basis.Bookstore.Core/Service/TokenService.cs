@@ -3,7 +3,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 
-namespace VenturesLab.BacklogTasks.Core.Service
+namespace Basis.Bookstore.Core.Service
 {
     public class TokenService : ITokenService
     {

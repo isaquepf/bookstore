@@ -12,10 +12,10 @@ namespace MyBook.Application.UseCases.Book.Update
         public UpdateBookCommand()
         {
         }
-        public UpdateBookCommand(int id, CreateBookCommand author)
+        public UpdateBookCommand(int id, CreateBookCommand book)
         {
             Id = id;
-            Book = author;
+            Book = book;
         }
 
     }

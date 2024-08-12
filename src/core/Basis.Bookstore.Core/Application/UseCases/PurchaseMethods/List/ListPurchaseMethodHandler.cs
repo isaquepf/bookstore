@@ -11,10 +11,13 @@ namespace Basis.Bookstore.Core.Application.UseCases.PurchaseMethods.Find
             _repository = repository;
         }
 
-
         public override Task<Result> Handle(ListPurchaseMethodCommand request, CancellationToken cancellationToken)
         {
-            Result.Data = _repository.GetAll();
+            var results = new List<PurchaseMethodResult>();
+
+            var purchaseMethods = _repository.GetAll();
+
+            Result.Data = results.Select(p => new PurchaseMethodResult(p.Id, p.Name));
 
             return Task.FromResult(Result);
         }

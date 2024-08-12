@@ -1,4 +1,4 @@
-﻿namespace VenturesLab.BacklogTasks.Core.Service
+﻿namespace Basis.Bookstore.Core.Service
 {
     public interface ITokenService
     {

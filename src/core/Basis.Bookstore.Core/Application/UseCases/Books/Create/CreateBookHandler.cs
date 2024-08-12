@@ -99,7 +99,7 @@ namespace Basis.Bookstore.Core.Application.UseCases.Books.Create
                     _bookSubjectRepository.Add(new BookSubject
                     {
                         BookId = book.Id,
-                        SubjectId = subjectId
+                        SubjectId = subjectId                   
                     });
                 }
 

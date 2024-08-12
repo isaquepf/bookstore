@@ -1,4 +1,5 @@
-﻿using BasisBookstore.Infraestructure.Bootstrap;
+﻿using Basis.Bookstore.Infraestructure.Bootstrap;
+using BasisBookstore.Infraestructure.Bootstrap;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,7 +23,7 @@ builder.Services.AddCors(options =>
 });
 
 
-builder.Services.ConfigureDataServices(builder.Configuration);
+builder.Services.ConfigureDataServices(builder.Configuration);         
 builder.Services.ConfigureMediatrServices();
 
 var app = builder.Build();
