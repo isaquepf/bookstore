@@ -1,59 +1,51 @@
-﻿<div>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-12">
-                <canvas id="myChart"></canvas>
-            </div>
+﻿@model IEnumerable<Basis.Bookstore.Mvc.Models.ChartModel>;
 
-            <div class="col-6">
-                <canvas id="pieChart"></canvas>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-@section Scripts {
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-
-        const ctx = document.getElementById('myChart');
-        const bookPrices = [25.99, 19.99, 32.5, 28.0];
-        new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['Livro 1', 'Livro 2', 'Livro 3', 'Livro 4'],
-                datasets: [{
-                    label: 'Relatório de livros x preços',
-                    data: bookPrices,
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-
-        fetch("/Reports/getReportPrices", function (data) {
-            console.log(data);
-        })
-
-
-
-
-
-
-
-
-
-    </script>
-
-
-
+@{
+    ViewData["Title"] = "Index";
 }
+
+<h1>Relatório de Livros</h1>
+
+<div class="container-fluid">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">
+                    @Html.DisplayNameFor(model => model.Titulo)
+                </th>
+                <th scope="col">
+                    @Html.DisplayNameFor(model => model.Autor)
+                </th>
+                <th scope="col">
+                    @Html.DisplayNameFor(model => model.Assunto)
+                 </th>
+                <th scope="col">
+                    @Html.DisplayNameFor(model => model.FormaCobranca)
+                </th>
+                <th scope="col">
+                    @Html.DisplayNameFor(model => model.DataPublicacao)
+                </th>
+                <th scope="col">
+                    @Html.DisplayNameFor(model => model.Preco)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var item in Model)
+            {
+                <tr>                    
+                    <td scope="row">@Html.DisplayFor(modelItem => item.Codl)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Titulo)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Autor)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Assunto)</td>
+                    <td>@Html.DisplayFor(modelItem => item.FormaCobranca)</td>
+                    <td>@Html.DisplayFor(modelItem => item.DataPublicacao)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Preco)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
 

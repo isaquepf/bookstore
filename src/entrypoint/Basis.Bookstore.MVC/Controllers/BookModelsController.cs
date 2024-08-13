@@ -120,7 +120,8 @@ namespace Basis.Bookstore.Mvc.Controllers
 
             ModelState.Remove("PurchaseMethodsVM");
             ModelState.Remove("PurchaseItems");
-
+            ModelState.Remove("AuthorVM");
+            ModelState.Remove("SubjectVM");
 
             if (ModelState.IsValid)
             {

@@ -12,6 +12,13 @@ builder.Services.AddControllersWithViews();
 builder.Services.ConfigureDataServices(builder.Configuration);
 builder.Services.ConfigureMediatrServices();
 
+builder.Services.Configure<RequestLocalizationOptions>(options =>
+{
+    var supportedCultures = new[] { "pt-BR" };
+    options.SetDefaultCulture(supportedCultures[0])
+        .AddSupportedCultures(supportedCultures)
+        .AddSupportedUICultures(supportedCultures);
+});
 
 
 var app = builder.Build();
@@ -35,6 +42,8 @@ app.MapControllerRoute(
 ApplyMigrations(app);
 
 app.Run();
+
+
 
 static void ApplyMigrations(WebApplication app)
 {
