@@ -1,5 +1,4 @@
 ﻿using Basis.Bookstore.Mvc.ViewModel;
-using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
 namespace Basis.Bookstore.Api.Model
@@ -10,13 +9,16 @@ namespace Basis.Bookstore.Api.Model
 
         [Required(ErrorMessage = "Titulo é obrigatório")]
         [Display(Name = "Titulo")]
-        [DataType(DataType.Text)]        
+        [DataType(DataType.Text)]
+        [MaxLength(40, ErrorMessage = "O campo Titulo pode ter até 40 caracteres.")]        
         public  string Title { get; set; }
 
         [Display(Name = "Descrição")]
+        [MaxLength(40, ErrorMessage = "O campo Descrição pode ter até 40 caracteres.")]
         public  string Description { get; set; }
 
         [Display(Name = "Publicado por")]
+        [MaxLength(40, ErrorMessage = "O campo Publicado por pode ter até 40 caracteres.")]
         public string Publisher { get; set; }
 
         [Display(Name = "Edição")]
@@ -40,8 +42,6 @@ namespace Basis.Bookstore.Api.Model
 
         public PurchaseMethodViewModel PurchaseMethodsVM { get; set; }
 
-        public List<PurchaseMethodViewItemModel> PurchaseItems { get; set; }
-        
-       // public List<string> PurchaseMethodsIds { get; set; }        
+        public List<PurchaseMethodViewItemModel> PurchaseItems { get; set; }        
     }
 }

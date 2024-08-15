@@ -8,67 +8,68 @@
 <h1>Livros</h1>
 
 <p>
-    <a asp-action="Create">Criar um livro</a>
+    <a asp-action="Create">Novo</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Publisher)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Edition)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PublishedYear)
-            </th>
-             <th>
-                @Html.DisplayNameFor(model => model.Authors)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Subjects)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+<div class="container-fluid">
+    <table class="table table-hover">
+        <thead>
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Title)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Publisher)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Edition)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PublishedYear)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.AuthorsText)
-                </td>
-                 <td>
-                    @Html.DisplayFor(modelItem => item.SubjectsText)
-                 </td>
-           
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                </td>
+                <th>
+                    Título
+                </th>
+                <th>
+                    Descrição
+                </th>
+                <th>
+                    Publicado por
+                </th>
+                <th>
+                    Edição
+                </th>
+                <th>
+                    Publicado em
+                </th>
+                <th>
+                    Autores
+                </th>
+                <th>
+                    Assuntos
+                </th>
+                <th></th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Publisher)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Edition)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PublishedYear)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AuthorsText)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SubjectsText)
+                    </td>
+
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |                     
+                        <a asp-action="Delete" asp-route-id="@item.Id">Excluir</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

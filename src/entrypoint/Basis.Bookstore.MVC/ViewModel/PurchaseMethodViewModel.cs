@@ -28,7 +28,7 @@ namespace Basis.Bookstore.Mvc.ViewModel
 
         [Required(ErrorMessage = "Preço é obrigatório")]
         [Display(Name = "Preço")]
-        [DataType(DataType.Currency)]
+        [DataType(DataType.Currency)]        
         public decimal Price { get; set; }
     }
 }

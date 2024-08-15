@@ -118,10 +118,7 @@ namespace Basis.Bookstore.Mvc.Controllers
             bookModel.PurchaseMethodsVM = vm.PurchaseMethodsVM;
             bookModel.SubjectVM = vm.SubjectVM;
 
-            ModelState.Remove("PurchaseMethodsVM");
-            ModelState.Remove("PurchaseItems");
-            ModelState.Remove("AuthorVM");
-            ModelState.Remove("SubjectVM");
+            RemoveVMValidations();
 
             if (ModelState.IsValid)
             {
@@ -209,15 +206,14 @@ namespace Basis.Bookstore.Mvc.Controllers
             {
                 return NotFound();
             }
-            
+
             var vm = GetViewModelData();
             bookModel.AuthorVM = vm.AuthorVM;
             bookModel.PurchaseMethodsVM = vm.PurchaseMethodsVM;
             bookModel.SubjectVM = vm.SubjectVM;
 
-            ModelState.Remove("PurchaseMethodsVM");
-            ModelState.Remove("PurchaseItems");
-                
+            RemoveVMValidations();
+
             if (ModelState.IsValid)
             {
                 var purchaseMethods = bookModel.PurchaseItems.Select(p => new Core.Application.UseCases.PurchaseMethods.Create.CreatePurchaseMethodCommand()
@@ -236,17 +232,25 @@ namespace Basis.Bookstore.Mvc.Controllers
                     SubjectsIds = bookModel.SubjectIds.Select(x => Convert.ToInt32(x)).ToList(),
                     Title = bookModel.Title,
                     AuthorsIds = bookModel.AuthorIds.Select(x => Convert.ToInt32(x)).ToList(),
-                    PurchaseMethods = purchaseMethods,                   
+                    PurchaseMethods = purchaseMethods,
                 }));
 
-            return RedirectToAction(nameof(Index));
-        }
+                return RedirectToAction(nameof(Index));
+            }
 
             return View(bookModel);
-    }
+        }
 
-    // GET: BookModels/Delete/5
-    public async Task<IActionResult> Delete(int? id)
+        private void RemoveVMValidations()
+        {
+            ModelState.Remove("PurchaseMethodsVM");
+            ModelState.Remove("PurchaseItems");
+            ModelState.Remove("AuthorVM");
+            ModelState.Remove("SubjectVM");
+        }
+
+        // GET: BookModels/Delete/5
+        public async Task<IActionResult> Delete(int? id)
     {
         if (id == null)
         {

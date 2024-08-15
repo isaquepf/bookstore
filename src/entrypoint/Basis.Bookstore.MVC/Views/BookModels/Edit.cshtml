@@ -7,7 +7,7 @@
 
 <h1>Livros</h1>
 
-<h4>- Edite o seu livro.</h4>
+<h4>Editar</h4>
 <hr />
 <form asp-action="Edit">
     <div class="row">
@@ -94,7 +94,11 @@
                         <td>
                             <input type="text"
                                    value="@Model.PurchaseItems[i].Price"
-                                   asp-for="@Model.PurchaseItems[i].Price" />
+                                   asp-for="@Model.PurchaseItems[i].Price"  
+                                   min="1"
+                                   required                                   
+                                   />
+                            <span asp-validation-for="@Model.PurchaseItems[i].Price" class="text-danger"></span>
                         </td>
                         <br />
                     </tr>
@@ -114,7 +118,7 @@
 
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Voltar para lista de livros</a>
 </div>
 
 @section Scripts {
